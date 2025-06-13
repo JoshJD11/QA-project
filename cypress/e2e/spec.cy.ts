@@ -72,7 +72,7 @@ describe('Activar el modo claro', () => {
 })
 
 
-describe('Crear un nuevo usuario desde la cuenta de administrador', () => {
+describe('Crear un nuevo usuario desde la cuenta de administrador usando la inviacion por correo', () => {
   beforeEach(function () {
     cy.visit('http://localhost:8080/')
   })
@@ -94,13 +94,13 @@ describe('Crear un nuevo usuario desde la cuenta de administrador', () => {
     cy.xpath('//*[@id="email"]').type('chocoflupi.arbuquercovish@gmail.com')
     cy.xpath('/html/body/div[4]/div/div/div/div/main/form/div[1]/div[2]/div/div/div[4]/label/span[1]').click()
     cy.xpath('/html/body/div[4]/div/div/div/div/main/form/div[2]/button').click()
-    cy.xpath('/html/body/div[4]/div/div/div/div/main/div[3]/div[4]/div[1]/a').contains('Mariana')
+    cy.contains('chocoflupi.arbuquercovish@gmail.com')
   })
 
 })
 
 
-describe('Eliminar un usuario ajeno desde la cuenta de administrador', () => {
+describe('Eliminar un usuario ajeno desde la cuenta de administrador', () => { //Este caso depende del anterior pues alli se crea el usuario a eliminar
   beforeEach(function () {
     cy.visit('http://localhost:8080/')
   })
@@ -119,7 +119,39 @@ describe('Eliminar un usuario ajeno desde la cuenta de administrador', () => {
     cy.contains('chocoflupi.arbuquercovish@gmail.com').click()
     cy.xpath('/html/body/div[4]/div/div/div/div/section[1]/form/div[2]/a[2]').click()
     cy.xpath('/html/body/div[4]/div/div/div/div/form/div/div[2]/div/button').click()
-    cy.xpath('/html/body/div[1]/span').contains('chocoflupi.arbuquercovish@gmail.com').should('not.exist')
+    cy.contains('chocoflupi.arbuquercovish@gmail.com').should('not.exist')
+  })
+})
+
+
+describe('Crear un usuario desde la cuenta de administrador utilizando la creacion manual de las credenciales', () => {
+  beforeEach(function () {
+    cy.visit('http://localhost:8080/')
+  })
+
+  it('Crear nuevo usuario exitosamente', () => {
+
+    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div/a[5]').click()
+    cy.xpath('//*[@id="email"]').type('admin@admin.com')
+    cy.xpath('//*[@id="password"]').type('password')
+    cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
+
+    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div[1]/a[4]').click()
+    cy.xpath('/html/body/div[4]/div/div/div/div/nav/a[4]').click()
+    cy.xpath('/html/body/div[4]/div/div/div/div/main/div[1]/div/a').click()
+
+    cy.xpath('//*[@id="name"]').type('Pedro')
+    cy.xpath('//*[@id="email"]').type('nuevo99@qa.com')
+
+    cy.xpath('/html/body/div[4]/div/div/div/div/main/form/div[1]/div[3]/label[2]/span[1]').click()
+    cy.xpath('//*[@id="password"]').type('mantecovish')
+    cy.xpath('//*[@id="password-confirm"]').type('mantecovish')
+    
+    cy.xpath('/html/body/div[4]/div/div/div/div/main/form/div[1]/div[2]/div/div/div[4]/label/span[1]').click()
+    cy.xpath('/html/body/div[4]/div/div/div/div/main/form/div[2]/button').click()
+    cy.contains('nuevo99@qa.com')
   })
 })
 
