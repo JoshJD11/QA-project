@@ -155,3 +155,60 @@ describe('Crear un usuario desde la cuenta de administrador utilizando la creaci
   })
 })
 
+
+describe('Crear un usuario con una contraseña que no cumple requisitos de seguridad', () => {
+  beforeEach(function () {
+    cy.visit('http://localhost:8080/')
+  })
+
+  it('Crear usuario sin exito luego de ingresar contrasena invalida', () => {
+    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div/a[5]').click()
+    cy.xpath('//*[@id="email"]').type('admin@admin.com')
+    cy.xpath('//*[@id="password"]').type('password')
+    cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
+
+    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div[1]/a[4]').click()
+    cy.xpath('/html/body/div[4]/div/div/div/div/nav/a[4]').click()
+    cy.xpath('/html/body/div[4]/div/div/div/div/main/div[1]/div/a').click()
+
+    cy.xpath('//*[@id="name"]').type('Petelgueuse')
+    cy.xpath('//*[@id="email"]').type('Romanicontii@qa.com')
+
+    cy.xpath('/html/body/div[4]/div/div/div/div/main/form/div[1]/div[3]/label[2]/span[1]').click()
+    cy.xpath('//*[@id="password"]').type('psw')
+    cy.xpath('//*[@id="password-confirm"]').type('psw')
+
+    cy.xpath('/html/body/div[4]/div/div/div/div/main/form/div[2]/button').click()
+    cy.contains('The password must be at least 8 characters.').should('be.visible')
+  })
+
+})
+
+
+describe('Crear una estanteria', () => {
+  beforeEach(function () {
+    cy.visit('http://localhost:8080/')
+  })
+
+  it('Crear estanteria exitosamente', () => {
+
+    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div/a[5]').click()
+    cy.xpath('//*[@id="email"]').type('admin@admin.com')
+    cy.xpath('//*[@id="password"]').type('password')
+    cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
+
+    cy.xpath('/html/body/header/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div[1]/a[2]').click()
+
+    cy.xpath('/html/body/div[4]/div[1]/div/button[1]').click()
+    cy.xpath('/html/body/div[4]/div[2]/div[1]/div/div[1]/aside/div/div/a[1]').click()
+    cy.xpath('//*[@id="name"]').type('Estante prron')
+    cy.xpath('/html/body/div[4]/div/div/div/div/main/form/div[6]/button').click()
+    cy.contains('Admin created shelf Estante prron').should('exist')
+  })
+  
+})
+
