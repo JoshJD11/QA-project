@@ -72,7 +72,7 @@ describe('Activar el modo claro', () => {
 })
 
 
-describe('Crear un nuevo usuario desde la cuenta de administrador usando la inviacion por correo', () => {
+describe('Crear un nuevo usuario desde la cuenta de administrador usando la invitacion por correo', () => {
   beforeEach(function () {
     cy.visit('http://localhost:8080/')
   })
@@ -99,29 +99,6 @@ describe('Crear un nuevo usuario desde la cuenta de administrador usando la invi
 
 })
 
-
-describe('Eliminar un usuario ajeno desde la cuenta de administrador', () => { //Este caso depende del anterior pues alli se crea el usuario a eliminar
-  beforeEach(function () {
-    cy.visit('http://localhost:8080/')
-  })
-
-  it('Eliminar un usuario correctamente', () => {
-    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
-    cy.xpath('/html/body/header/nav/div/a[5]').click()
-    cy.xpath('//*[@id="email"]').type('admin@admin.com')
-    cy.xpath('//*[@id="password"]').type('password')
-    cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
-
-    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
-    cy.xpath('/html/body/header/nav/div[1]/a[4]').click()
-    cy.xpath('/html/body/div[4]/div/div/div/div/nav/a[4]').click()
-
-    cy.contains('chocoflupi.arbuquercovish@gmail.com').click()
-    cy.xpath('/html/body/div[4]/div/div/div/div/section[1]/form/div[2]/a[2]').click()
-    cy.xpath('/html/body/div[4]/div/div/div/div/form/div/div[2]/div/button').click()
-    cy.contains('chocoflupi.arbuquercovish@gmail.com').should('not.exist')
-  })
-})
 
 
 describe('Crear un usuario desde la cuenta de administrador utilizando la creacion manual de las credenciales', () => {
@@ -154,6 +131,49 @@ describe('Crear un usuario desde la cuenta de administrador utilizando la creaci
     cy.contains('nuevo99@qa.com')
   })
 })
+
+
+
+describe('Eliminar un usuario ajeno desde la cuenta de administrador', () => { 
+  beforeEach(function () {
+    cy.visit('http://localhost:8080/')
+  })
+
+  it('Eliminar un usuario invitado por correo correctamente', () => {
+    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div/a[5]').click()
+    cy.xpath('//*[@id="email"]').type('admin@admin.com')
+    cy.xpath('//*[@id="password"]').type('password')
+    cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
+
+    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div[1]/a[4]').click()
+    cy.xpath('/html/body/div[4]/div/div/div/div/nav/a[4]').click()
+
+    cy.contains('chocoflupi.arbuquercovish@gmail.com').click()
+    cy.xpath('/html/body/div[4]/div/div/div/div/section[1]/form/div[2]/a[2]').click()
+    cy.xpath('/html/body/div[4]/div/div/div/div/form/div/div[2]/div/button').click()
+    cy.contains('chocoflupi.arbuquercovish@gmail.com').should('not.exist')
+  })
+
+  it('Eliminar otro usuario cuyas credenciales fueron creadas manualmente', () => {
+    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div/a[5]').click()
+    cy.xpath('//*[@id="email"]').type('admin@admin.com')
+    cy.xpath('//*[@id="password"]').type('password')
+    cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
+
+    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div[1]/a[4]').click()
+    cy.xpath('/html/body/div[4]/div/div/div/div/nav/a[4]').click()
+
+    cy.contains('nuevo99@qa.com').click()
+    cy.xpath('/html/body/div[4]/div/div/div/div/section[1]/form/div[2]/a[2]').click()
+    cy.xpath('/html/body/div[4]/div/div/div/div/form/div/div[2]/div/button').click()
+    cy.contains('chocoflupi.arbuquercovish@gmail.com').should('not.exist')
+  })
+})
+
 
 
 describe('Crear un usuario con una contraseña que no cumple requisitos de seguridad', () => {
@@ -212,3 +232,109 @@ describe('Crear una estanteria', () => {
   
 })
 
+
+describe('Creación fallida de una estanteria por datos insuficientes.', () => {
+  beforeEach(function () {
+    cy.visit('http://localhost:8080/')
+  })
+
+  it('Creacion de estante sin nombre', () => {
+    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div/a[5]').click()
+    cy.xpath('//*[@id="email"]').type('admin@admin.com')
+    cy.xpath('//*[@id="password"]').type('password')
+    cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
+
+    cy.xpath('/html/body/header/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div[1]/a[2]').click()
+
+    cy.xpath('/html/body/div[4]/div[1]/div/button[1]').click()
+    cy.xpath('/html/body/div[4]/div[2]/div[1]/div/div[1]/aside/div/div/a[1]').click()
+    cy.xpath('/html/body/div[4]/div/div/div/div/main/form/div[6]/button').click()
+
+    cy.url().should('include', 'create-shelf')
+    cy.contains('The name field is required.').should('be.visible')
+  })
+
+})
+
+
+describe('Eliminar una estanteria con exito', () => { 
+  beforeEach(function () {
+    cy.visit('http://localhost:8080/')
+  })
+
+  it('Buscar una estanteria y eliminarla', () => {
+
+    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div/a[5]').click()
+    cy.xpath('//*[@id="email"]').type('admin@admin.com')
+    cy.xpath('//*[@id="password"]').type('password')
+    cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
+
+    cy.xpath('/html/body/header/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div[1]/a[2]').click()
+
+    cy.xpath('/html/body/div[4]/div[2]/div[2]/div/main/div[2]/a').contains('Estante prron').click()
+    cy.xpath('/html/body/div[4]/div[1]/div/button[1]').click()
+    cy.xpath('/html/body/div[4]/div[2]/div[1]/div/div[1]/aside/div/div/a[4]/span[2]').click()
+    cy.xpath('/html/body/div[4]/div/div/div/div/div[2]/div/form/button').click()
+    cy.contains('Estante prron').should('not.exist')
+    
+  })
+  
+})
+
+describe('Abrir la papelera de reciclaje y verificar que un elemento que ha sido borrado anteriormente', () => { 
+  beforeEach(function () {
+    cy.visit('http://localhost:8080/')
+  })
+
+  it('Dirigirse a la papelera de reciclaje', () => {
+
+    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div/a[5]').click()
+    cy.xpath('//*[@id="email"]').type('admin@admin.com')
+    cy.xpath('//*[@id="password"]').type('password')
+    cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
+
+    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div[1]/a[4]').click()
+    cy.xpath('/html/body/div[4]/div/div/div/div/nav/a[2]').click()
+    cy.xpath('/html/body/div[4]/div/div/div/div/div[1]/div/div[2]/a').click()
+
+    cy.contains('Estante prron').should('exist')
+    cy.url().should('include', 'recycle-bin')
+  })
+
+})
+
+
+describe('Eliminar un elemento permanentemente', () => { 
+  beforeEach(function () {
+    cy.visit('http://localhost:8080/')
+  })
+
+  it('Dirigirse a la papelera para eliminar un elemento', () => {
+    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div/a[5]').click()
+    cy.xpath('//*[@id="email"]').type('admin@admin.com')
+    cy.xpath('//*[@id="password"]').type('password')
+    cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
+
+    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div[1]/a[4]').click()
+    cy.xpath('/html/body/div[4]/div/div/div/div/nav/a[2]').click()
+    cy.xpath('/html/body/div[4]/div/div/div/div/div[1]/div/div[2]/a').click()
+
+    cy.contains('.item-list-row.flex-container-row.items-center.px-s.wrap', 'Estante prron').within(() => {
+      cy.get('button.button.outline').click()
+      cy.contains('a.text-item', 'Permanently Delete').click()
+    })
+
+    cy.xpath('/html/body/div[4]/div/div/div/div/div/form/button').click()
+    cy.contains('Estante prron').should('not.exist')
+
+  })
+
+})
