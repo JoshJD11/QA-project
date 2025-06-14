@@ -1,4 +1,4 @@
-import '../../node_modules/cypress-xpath'
+import 'cypress-xpath'
 
 
 Cypress.on('uncaught:exception', (err, runnable) => {  
@@ -21,6 +21,47 @@ describe('Iniciar sesion con usuario existente', () => {
     cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
     cy.xpath('/html/body/header/nav/div[2]/span/span').contains('Admin')
     
+  })
+})
+
+
+describe('Cerrar sesion', () => {
+  
+  beforeEach(function () {
+    cy.visit('http://localhost:8080/')
+  })
+
+    it('Iniciar sesion con cualquier cuenta para luego cerrarla exitosamente', () => {
+      cy.xpath('//*[@id="header"]/div[1]/div/button').click()
+      cy.xpath('/html/body/header/nav/div/a[5]').click()
+      cy.xpath('//*[@id="email"]').type('admin@admin.com')
+      cy.xpath('//*[@id="password"]').type('password')
+      cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
+      cy.xpath('/html/body/header/nav/div[2]/span/span').contains('Admin')
+
+      cy.xpath('//*[@id="header"]/div[1]/div/button').click()
+      cy.xpath('/html/body/header/nav/div[2]/ul/li[7]/form/button').click()
+      cy.contains('Admin').should('not.exist')
+    })
+
+})
+
+
+describe('Ver contenido favorito del usuario actual', () => {
+  beforeEach(function () {
+    cy.visit('http://localhost:8080/')
+  })
+
+  it('Dirigirse a la URL donde se muestra el contenido favorito del usuario actual', () => {
+    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div/a[5]').click()
+    cy.xpath('//*[@id="email"]').type('admin@admin.com')
+    cy.xpath('//*[@id="password"]').type('password')
+    cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
+
+    cy.xpath('/html/body/header/div[1]/div/button').click()
+    cy.xpath('/html/body/header/nav/div[2]/ul/li[1]/a').click()
+    cy.url().should('include', 'favourites')
   })
 })
 
@@ -336,5 +377,8 @@ describe('Eliminar un elemento permanentemente', () => {
     cy.contains('Estante prron').should('not.exist')
 
   })
-
 })
+
+
+
+
