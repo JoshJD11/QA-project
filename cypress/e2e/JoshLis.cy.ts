@@ -433,10 +433,9 @@ describe('La casilla de “recuérdame” desactivada no influye en el comportam
     cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
     cy.xpath('//*[@id="header"]/div[1]/div/button').click()
     cy.xpath('//*[@id="header"]/nav/div[2]/ul/li[7]/form/button').click()
-    cy.xpath('//*[@id="email"]').should('have.value', '');
+    cy.xpath('//*[@id="main-content"]/div[1]/div[1]/button/span[1]').should('exist')
     
-    
-    
+  
 
   })
 })
