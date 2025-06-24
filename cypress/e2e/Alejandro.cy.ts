@@ -258,7 +258,7 @@ describe('Restringir el registro para un dominio específico', () => {
 
 
 
-  describe('Ordenar los roles de usuario según su fecha de creación', () => { 
+  describe('Ordenar los roles de usuario según su fecha de actualizacion', () => { 
     beforeEach(function () {
       cy.visit('http://localhost:8080/')
     })
