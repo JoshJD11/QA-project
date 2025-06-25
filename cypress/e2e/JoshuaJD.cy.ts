@@ -14,8 +14,6 @@ describe('Iniciar sesion con usuario existente', () => {
   })
 
   it('Iniciar sesion', () => {
-    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
-    cy.xpath('/html/body/header/nav/div/a[5]').click()
     cy.xpath('//*[@id="email"]').type('admin@admin.com')
     cy.xpath('//*[@id="password"]').type('password')
     cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
@@ -32,8 +30,6 @@ describe('Cerrar sesion', () => {
   })
 
     it('Iniciar sesion con cualquier cuenta para luego cerrarla exitosamente', () => {
-      cy.xpath('//*[@id="header"]/div[1]/div/button').click()
-      cy.xpath('/html/body/header/nav/div/a[5]').click()
       cy.xpath('//*[@id="email"]').type('admin@admin.com')
       cy.xpath('//*[@id="password"]').type('password')
       cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
@@ -53,8 +49,6 @@ describe('Ver contenido favorito del usuario actual', () => {
   })
 
   it('Dirigirse a la URL donde se muestra el contenido favorito del usuario actual', () => {
-    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
-    cy.xpath('/html/body/header/nav/div/a[5]').click()
     cy.xpath('//*[@id="email"]').type('admin@admin.com')
     cy.xpath('//*[@id="password"]').type('password')
     cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
@@ -73,26 +67,28 @@ describe('Iniciar sesion con usuario existente pero con una contrasena erronea',
   })
 
   it('Intentar iniciar sesion', () => {
-    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
-    cy.xpath('/html/body/header/nav/div/a[5]').click()
     cy.xpath('//*[@id="email"]').type('admin@admin.com')
     cy.xpath('//*[@id="password"]').type('cualquiervara')
     cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
-    cy.xpath('/html/body/div[4]/div/div[2]/form/div[1]/div[1]/div').contains('Estas credenciales no coinciden con nuestros registros.')
+    cy.xpath('/html/body/div[4]/div/div[2]/form/div[1]/div[1]/div').contains('These credentials do not match our records.')
     cy.url().should('include', 'login')
   })
 })
 
 
-describe('Activar el modo oscuro', () => { //Ojo con el idioma que se cambia a la hora de hacer la prueba
+describe('Activar el modo oscuro', () => {
   beforeEach(function () {
     cy.visit('http://localhost:8080/')
   })
 
   it('Presionar boton para activar modo oscuro', () => {
+    cy.xpath('//*[@id="email"]').type('admin@admin.com')
+    cy.xpath('//*[@id="password"]').type('password')
+    cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
+
     cy.xpath('/html/body/div[4]/div/div/div/div[1]/div[2]/div/form/button/span[2]').contains('Dark Mode')
     cy.xpath('/html/body/div[4]/div/div/div/div[1]/div[2]/div/form/button').click()
-    cy.xpath('/html/body/div[4]/div/div/div/div[1]/div[2]/div/form/button/span[2]').contains('Modo Claro')
+    cy.xpath('/html/body/div[4]/div/div/div/div[1]/div[2]/div/form/button/span[2]').contains('Light Mode')
   })
 
 })
@@ -104,10 +100,13 @@ describe('Activar el modo claro', () => {
   })
 
   it('Presionar boton para activar modo claro', () => {
+    cy.xpath('//*[@id="email"]').type('admin@admin.com')
+    cy.xpath('//*[@id="password"]').type('password')
+    cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
+
+    cy.xpath('/html/body/div[4]/div/div/div/div[1]/div[2]/div/form/button/span[2]').contains('Light Mode')
     cy.xpath('/html/body/div[4]/div/div/div/div[1]/div[2]/div/form/button').click()
-    cy.xpath('/html/body/div[4]/div/div/div/div[1]/div[2]/div/form/button/span[2]').contains('Modo Claro')
-    cy.xpath('/html/body/div[4]/div/div/div/div[1]/div[2]/div/form/button').click()
-    cy.xpath('/html/body/div[4]/div/div/div/div[1]/div[2]/div/form/button/span[2]').contains('Modo Oscuro')
+    cy.xpath('/html/body/div[4]/div/div/div/div[1]/div[2]/div/form/button/span[2]').contains('Dark Mode')
   })
 
 })
@@ -120,8 +119,6 @@ describe('Crear un nuevo usuario desde la cuenta de administrador usando la invi
 
   it('Crear nuevo usuario exitosamente', () => {
 
-    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
-    cy.xpath('/html/body/header/nav/div/a[5]').click()
     cy.xpath('//*[@id="email"]').type('admin@admin.com')
     cy.xpath('//*[@id="password"]').type('password')
     cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
@@ -149,8 +146,6 @@ describe('Crear un usuario desde la cuenta de administrador utilizando la creaci
 
   it('Crear nuevo usuario exitosamente', () => {
 
-    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
-    cy.xpath('/html/body/header/nav/div/a[5]').click()
     cy.xpath('//*[@id="email"]').type('admin@admin.com')
     cy.xpath('//*[@id="password"]').type('password')
     cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
@@ -181,8 +176,7 @@ describe('Eliminar un usuario ajeno desde la cuenta de administrador', () => {
   })
 
   it('Eliminar un usuario invitado por correo correctamente', () => {
-    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
-    cy.xpath('/html/body/header/nav/div/a[5]').click()
+
     cy.xpath('//*[@id="email"]').type('admin@admin.com')
     cy.xpath('//*[@id="password"]').type('password')
     cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
@@ -198,8 +192,7 @@ describe('Eliminar un usuario ajeno desde la cuenta de administrador', () => {
   })
 
   it('Eliminar otro usuario cuyas credenciales fueron creadas manualmente', () => {
-    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
-    cy.xpath('/html/body/header/nav/div/a[5]').click()
+
     cy.xpath('//*[@id="email"]').type('admin@admin.com')
     cy.xpath('//*[@id="password"]').type('password')
     cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
@@ -223,8 +216,7 @@ describe('Crear un usuario con una contraseña que no cumple requisitos de segur
   })
 
   it('Crear usuario sin exito luego de ingresar contrasena invalida', () => {
-    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
-    cy.xpath('/html/body/header/nav/div/a[5]').click()
+
     cy.xpath('//*[@id="email"]').type('admin@admin.com')
     cy.xpath('//*[@id="password"]').type('password')
     cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
@@ -255,8 +247,6 @@ describe('Crear una estanteria', () => {
 
   it('Crear estanteria exitosamente', () => {
 
-    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
-    cy.xpath('/html/body/header/nav/div/a[5]').click()
     cy.xpath('//*[@id="email"]').type('admin@admin.com')
     cy.xpath('//*[@id="password"]').type('password')
     cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
@@ -280,8 +270,6 @@ describe('Creación fallida de una estanteria por datos insuficientes.', () => {
   })
 
   it('Creacion de estante sin nombre', () => {
-    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
-    cy.xpath('/html/body/header/nav/div/a[5]').click()
     cy.xpath('//*[@id="email"]').type('admin@admin.com')
     cy.xpath('//*[@id="password"]').type('password')
     cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
@@ -307,8 +295,6 @@ describe('Eliminar una estanteria con exito', () => {
 
   it('Buscar una estanteria y eliminarla', () => {
 
-    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
-    cy.xpath('/html/body/header/nav/div/a[5]').click()
     cy.xpath('//*[@id="email"]').type('admin@admin.com')
     cy.xpath('//*[@id="password"]').type('password')
     cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
@@ -333,8 +319,6 @@ describe('Abrir la papelera de reciclaje y verificar que un elemento que ha sido
 
   it('Dirigirse a la papelera de reciclaje', () => {
 
-    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
-    cy.xpath('/html/body/header/nav/div/a[5]').click()
     cy.xpath('//*[@id="email"]').type('admin@admin.com')
     cy.xpath('//*[@id="password"]').type('password')
     cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
@@ -357,8 +341,7 @@ describe('Eliminar un elemento permanentemente', () => {
   })
 
   it('Dirigirse a la papelera para eliminar un elemento', () => {
-    cy.xpath('//*[@id="header"]/div[1]/div/button').click()
-    cy.xpath('/html/body/header/nav/div/a[5]').click()
+
     cy.xpath('//*[@id="email"]').type('admin@admin.com')
     cy.xpath('//*[@id="password"]').type('password')
     cy.xpath('/html/body/div[4]/div/div[2]/form/div[2]/div[2]/button').click()
@@ -378,6 +361,8 @@ describe('Eliminar un elemento permanentemente', () => {
 
   })
 })
+
+
 
 
 
